@@ -14,15 +14,11 @@ public class NinjaController {
         this.ninjaService = ninjaService;
     }
 
-    @GetMapping("/boasVindas")
-    public String boasVindas(){
-        return "Essa é minha primeira mensagem nessa rota";
-    }
 
     // Adicionar ninja (CREATE)
     @PostMapping("/criar")
-    public String criarNinjas(){
-        return "Ninja criado";
+    public NinjaModel criarNinjas(@RequestBody NinjaModel ninjaModel){
+        return ninjaService.criarNinja(ninjaModel);
     }
 
     // Listar todos os ninjas (CREATE)

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalhe do Ninja</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 24px;
+            background: #f3f5fa;
+            color: #263248;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .card-ninja {
+            margin-bottom: 32px;
+            padding: 32px;
+            background: #fff;
+            border: 1px solid #e4e9f2;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(25, 42, 70, 0.06);
+        }
+
+        .perfil {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .avatar {
+            display: block;
+            object-fit: cover;
+            border: 4px solid #eef2ff;
+            border-radius: 50%;
+        }
+
+        .avatar-grande {
+            flex-shrink: 0;
+            width: 96px;
+            height: 96px;
+        }
+
+        .perfil-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .perfil-info h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .rank {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .dados {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 0;
+        }
+
+        .dado dt {
+            margin-bottom: 6px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .dado dd {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .secao-titulo {
+            margin: 0 0 16px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background: #fff;
+            border: 1px solid #e4e9f2;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(25, 42, 70, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background: #f8faff;
+        }
+
+        th {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e4e9f2;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        td {
+            padding: 18px 20px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .mission-name {
+            font-weight: 600;
+        }
+
+        .muted {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4f46e5;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .voltar:hover {
+            color: #4338ca;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 24px 12px;
+            }
+
+            .card-ninja {
+                padding: 20px;
+            }
+
+            .perfil {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <h1>Detalhes do Ninja</h1>
+
+    <section class="card-ninja">
+        <div class="perfil">
+            <img class="avatar avatar-grande" th:src="${ninja.imgUrl}" th:alt="${ninja.nome}">
+            <div class="perfil-info">
+                <h2 th:text="${ninja.nome}"></h2>
+                <span class="rank" th:text="${ninja.rank}"></span>
+            </div>
+        </div>
+
+        <dl class="dados">
+            <div class="dado">
+                <dt>Email</dt>
+                <dd th:text="${ninja.email}"></dd>
+            </div>
+            <div class="dado">
+                <dt>Idade</dt>
+                <dd th:text="${ninja.idade}"></dd>
+            </div>
+        </dl>
+    </section>
+
+    <h3 class="secao-titulo">Missões</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Dificuldade</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${ninja.missoes != null}">
+                <td class="mission-name" th:text="${ninja.missoes.nome}"></td>
+                <td><span class="rank" th:text="${ninja.missoes.dificuldade}"></span></td>
+            </tr>
+            <tr th:if="${ninja.missoes == null}">
+                <td colspan="2" class="muted">Nenhuma missão atribuída.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/ninjas/ui/listar}" class="voltar">Voltar para a lista de ninjas</a>
+</main>
+</body>
+</html>

@@ -1,4 +1,59 @@
 package dev.java10x.CadastroDeNinjas.Missoes;
 
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+
 public class MissoesService {
+
+    private final MissoesRepository missoesRepository;
+    private final MissoesMapper missoesMapper;
+
+    public MissoesService(MissoesRepository missoesRepository, MissoesMapper missoesMapper) {
+        this.missoesRepository = missoesRepository;
+        this.missoesMapper = missoesMapper;
+    }
+
+    //Listar todas as missoes
+    public List<MissoesDTO> listarMissoes(){
+        List<MissoesModel> missoesModels = missoesRepository.findAll();
+
+        return missoesModels.stream()
+                .map(missoesMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    //Listar missoes por ID
+    public MissoesDTO listarMissoesPorId(Long id){
+        Optional<MissoesModel> missoesModel = missoesRepository.findById(id);
+        return missoesModel.map(missoesMapper::map).orElse(null);
+    }
+
+    //Criar Missao
+    public MissoesDTO criarMissao(MissoesDTO missaoDTO){
+        MissoesModel missoesModel = missoesMapper.map(missaoDTO);
+        missoesModel = missoesRepository.save(missoesModel);
+        return missoesMapper.map(missoesModel);
+    }
+
+    //Deletar Missao
+    public void deletarMissaoPorId(Long id){
+        missoesRepository.deleteById(id);
+    }
+
+    //Alterar Missao por id
+    public MissoesDTO alterarMissaoPorId(Long id, MissoesDTO missoesDTO){
+        Optional<MissoesModel> missaoExistente = missoesRepository.findById(id);
+        if (missaoExistente.isPresent()){
+            MissoesModel missaoAtualizada = missoesMapper.map(missoesDTO);
+            missaoAtualizada.setId(id);
+            MissoesModel missaoSalva = missoesRepository.save(missaoAtualizada);
+            return missoesMapper.map(missaoSalva);
+        }
+        return null;
+    }
 }

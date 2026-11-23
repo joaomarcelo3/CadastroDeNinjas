@@ -21,7 +21,7 @@ public class NinjaControllerUi {
     public String listarNinjas(Model model){
         List<NinjaDTO> ninjas = ninjaService.listarNinjas();
         model.addAttribute("ninjas", ninjas);
-        return "listarNinjas"; // tem que retornar o nome da pagina que renderiza
+        return "ninjas/listarNinjas"; // tem que retornar o nome da pagina que renderiza
     }
 
     @GetMapping("/deletar/{id}")
@@ -31,10 +31,21 @@ public class NinjaControllerUi {
     }
 
     @GetMapping("/alterar/{id}")
-    public String alterarNinjaID(@PathVariable Long id, @RequestBody NinjaDTO ninjaDTO){
-        ninjaService.atualizarNinjaPorid(id, ninjaDTO);
-        return "redirect:/ninjas/ui/listar";
+    public String mostrarFormularioAlterar(@PathVariable Long id, Model model) {
+        NinjaDTO ninja = ninjaService.listarNinjasPorId(id);
+        if (ninja == null) {
+            return "redirect:/ninjas/ui/listar";
+        }
+        model.addAttribute("ninja", ninja);
+        return "ninjas/alterarNinja";
+    }
 
+    @PostMapping("/alterar/{id}")
+    public String alterarNinja(@PathVariable Long id, @ModelAttribute NinjaDTO ninja,
+                               RedirectAttributes redirectAttributes) {
+        ninjaService.atualizarNinjaPorid(id, ninja);
+        redirectAttributes.addFlashAttribute("mensagem", "Ninja alterado com sucesso!");
+        return "redirect:/ninjas/ui/listar";
     }
 
     @GetMapping("/listar/{id}")
@@ -42,7 +53,7 @@ public class NinjaControllerUi {
         NinjaDTO ninja = ninjaService.listarNinjasPorId(id);
         if (ninja != null) {
             model.addAttribute("ninja", ninja);
-            return "detalhesNinja";
+            return "ninjas/detalhesNinja";
         }
         return "redirect:/ninjas/ui/listar";
     }
@@ -50,7 +61,7 @@ public class NinjaControllerUi {
     @GetMapping("/adicionar")
     public String mostrarFormularioAdicionarNinja(Model model){
         model.addAttribute("ninja", new NinjaDTO());
-        return "adicionarNinja";
+        return "ninjas/adicionarNinja";
     }
 
     @PostMapping("/salvar")

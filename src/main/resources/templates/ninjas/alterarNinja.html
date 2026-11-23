@@ -1,0 +1,169 @@
+<!
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Alterar Ninja</title>
+    <style>
+
+        /* ===== Formulário de cadastro ===== */
+
+        .container.container-form {
+            max-width: 640px;
+        }
+
+        .form-ninja {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 32px;
+            background: #fff;
+            border: 1px solid #e4e9f2;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(25, 42, 70, 0.06);
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .campo label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .campo input {
+            width: 100%;
+            min-height: 46px;
+            padding: 11px 14px;
+            background: #f8faff;
+            color: #263248;
+            border: 1px solid #e4e9f2;
+            border-radius: 8px;
+            font: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .campo input::placeholder {
+            color: #94a3b8;
+        }
+
+        .campo input:hover {
+            border-color: #c7d2fe;
+        }
+
+        .campo input:focus {
+            outline: none;
+            background: #fff;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.35);
+        }
+
+        /* Botão principal (mesmo estilo do .btn-details) */
+        .form-ninja .btn {
+            margin-top: 8px;
+            min-height: 46px;
+            background: #4f46e5;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-ninja .btn:hover {
+            background: #4338ca;
+        }
+
+        /* Mensagem de sucesso/aviso */
+        .mensagem {
+            margin-bottom: 20px;
+            padding: 14px 18px;
+            background: #eef2ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Link de voltar */
+        .voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4f46e5;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .voltar:hover {
+            color: #4338ca;
+            transform: translateX(-3px);
+        }
+
+        .voltar:focus-visible {
+            outline: 3px solid #818cf8;
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .form-ninja {
+                padding: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .campo input,
+            .voltar {
+                transition: none;
+            }
+
+            .voltar:hover {
+                transform: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<main class="container">
+    <h1>Adicionar Novo Ninja</h1>
+
+    <div th:if="${mensagem}" class="mensagem" th:text="${mensagem}"></div>
+
+    <form th:action="@{/ninjas/ui/salvar}" th:object="${ninja}" method="post" class="form-ninja">
+        <div class="campo">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" th:field="*{nome}" required>
+        </div>
+
+        <div class="campo">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required>
+        </div>
+
+        <div class="campo">
+            <label for="imgUrl">URL da Imagem:</label>
+            <input type="text" id="imgUrl" th:field="*{imgUrl}" required>
+        </div>
+
+        <div class="campo">
+            <label for="idade">Idade:</label>
+            <input type="number" id="idade" th:field="*{idade}" required>
+        </div>
+
+        <div class="campo">
+            <label for="rank">Rank:</label>
+            <input type="text" id="rank" th:field="*{rank}" required>
+        </div>
+
+        <button type="submit" class="btn">Cadastrar Ninja</button>
+    </form>
+</main>
+</body>
+</html>

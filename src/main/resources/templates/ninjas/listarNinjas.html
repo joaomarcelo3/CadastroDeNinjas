@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1360px;
             margin: 0 auto;
         }
 
@@ -113,8 +113,8 @@
         }
 
         .mission {
-            min-width: 200px;
-            max-width: 280px;
+            min-width: 180px;
+            max-width: 240px;
             white-space: normal;
             line-height: 1.6;
         }
@@ -157,6 +157,15 @@
         .btn:focus-visible {
             outline: 3px solid #818cf8;
             outline-offset: 3px;
+        }
+
+        .btn-mission {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .btn-mission:hover {
+            background: #d1fae5;
         }
 
         .btn-edit {
@@ -235,8 +244,13 @@
 
     <div class="page-header">
         <h1>Lista de ninjas</h1>
-        <a class="btn btn-primary" th:href="@{/ninjas/ui/adicionar}">+ Adicionar ninja</a>
+        <div class="header-actions">
+            <a class="btn btn-edit" th:href="@{/missoes/ui/listar}">Listar Missões</a>
+            <a class="btn btn-primary" th:href="@{/ninjas/ui/adicionar}">+ Adicionar ninja</a>
+        </div>
     </div>
+
+
 
     <div th:if="${mensagem}" class="mensagem" th:text="${mensagem}"></div>
 
@@ -271,6 +285,7 @@
                 </td>
                 <td>
                     <div class="actions">
+                        <a class="btn btn-mission" th:href="@{/ninjas/ui/atribuir-missao/{id}(id=${ninja.id})}">Atribuir Missão</a>
                         <a class="btn btn-edit" th:href="@{/ninjas/ui/alterar/{id}(id=${ninja.id})}">Alterar</a>
                         <a class="btn btn-delete" th:href="@{/ninjas/ui/deletar/{id}(id=${ninja.id})}"
                            onclick="return confirm('Deseja deletar este ninja?')">Deletar</a>

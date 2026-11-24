@@ -1,5 +1,7 @@
 package dev.java10x.CadastroDeNinjas.Ninjas;
 
+import dev.java10x.CadastroDeNinjas.Missoes.MissoesDTO;
+import dev.java10x.CadastroDeNinjas.Missoes.MissoesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +14,13 @@ import java.util.List;
 public class NinjaControllerUi {
 
     private final NinjaService ninjaService;
+    private final MissoesService missoesService;
 
-    public NinjaControllerUi(NinjaService ninjaService) {
+    public NinjaControllerUi(NinjaService ninjaService, MissoesService missoesService) {
         this.ninjaService = ninjaService;
+        this.missoesService = missoesService;
     }
+
 
     @GetMapping("/listar")
     public String listarNinjas(Model model){
@@ -70,4 +75,21 @@ public class NinjaControllerUi {
         redirectAttributes.addFlashAttribute("mensagem", "Ninja cadastrado com sucesso!");
         return "redirect:/ninjas/ui/listar";
     }
+
+    @GetMapping("/atribuir-missao/{id}")
+    public String atribuirMissao(@PathVariable Long id, Model model){
+        NinjaDTO ninja = ninjaService.listarNinjasPorId(id);
+        List<MissoesDTO> missoes = missoesService.listarMissoes();
+        model.addAttribute("ninja", ninjaService.listarNinjasPorId(id));
+        model.addAttribute("missoes", missoesService.listarMissoes());
+        return "ninjas/atribuirMissao";
+    }
+
+    @PostMapping("/atribuir-missao")
+    public String atribuirMissao(@RequestParam Long ninjaId, @RequestParam(required = false)  Long missaoId){
+        ninjaService.atribuirMissao(ninjaId, missaoId);
+        return "redirect:/ninjas/ui/listar";
+    }
+
+
 }

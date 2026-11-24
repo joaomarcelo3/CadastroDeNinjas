@@ -1,5 +1,7 @@
 package dev.java10x.CadastroDeNinjas.Ninjas;
 
+import dev.java10x.CadastroDeNinjas.Missoes.MissoesModel;
+import dev.java10x.CadastroDeNinjas.Missoes.MissoesRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -12,10 +14,12 @@ public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
     private final NinjaMapper ninjaMapper;
+    private final MissoesRepository missoesRepository;
 
-    public NinjaService(NinjaRepository ninjaRepository, NinjaMapper ninjaMapper) {
+    public NinjaService(NinjaRepository ninjaRepository, NinjaMapper ninjaMapper, MissoesRepository missoesRepository) {
         this.ninjaRepository = ninjaRepository;
         this.ninjaMapper = ninjaMapper;
+        this.missoesRepository = missoesRepository;
     }
 
     // Listar todos os meus ninjas
@@ -55,6 +59,21 @@ public class NinjaService {
            return  ninjaMapper.map(ninjaSalvo);
        }
        return null;
+    }
+
+    // Atribuir Missao para o ninja
+    public void atribuirMissao(Long ninjaId, Long missaoId){
+        NinjaModel ninja = ninjaRepository.findById(ninjaId)
+                .orElseThrow(() -> new RuntimeException("Missão não encontrado"));
+
+        if (missaoId == null){
+            ninja.setMissoes(null);
+        } else {
+            MissoesModel missao = missoesRepository.findById(missaoId)
+                    .orElseThrow(() -> new RuntimeException("Missão não encontrado"));
+            ninja.setMissoes(missao);
+        }
+        ninjaRepository.save(ninja);
     }
 
 }
